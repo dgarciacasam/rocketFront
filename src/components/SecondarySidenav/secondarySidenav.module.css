@@ -36,3 +36,31 @@ ul.tree li {
 ul.tree li:last-child::before {
   border-left: none; /* Elimina la línea vertical para el último hijo */
 }
+
+.sectionTransition {
+  transition: width 0.3s ease-in-out, margin-left 0.3s ease-in-out;
+}
+
+.hidden {
+  width: 0;
+  margin-left: 0;
+}
+
+.visible {
+  width: 18rem;
+  margin-left: 5rem;
+}
+
+.navTransition {
+  transition: all 0.3s ease-in-out;
+}
+
+.navHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navVisible {
+  opacity: 1;
+  pointer-events: auto;
+}

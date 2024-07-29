@@ -7,16 +7,14 @@ export const SecondarySidenav = () => {
 
   return (
     <section
-      className={
-        'fixed flex items-center justify-center h-screen z-40' +
-        (!isShown ? ' w-0 ml-0' : ' lg:ml-20 w-72 ')
-      }
+      className={`fixed flex items-center justify-center h-screen z-40 ${
+        styles.sectionTransition
+      } ${isShown ? styles.visible : styles.hidden}`}
     >
       <nav
-        className={
-          'bg-[#222327] w-72 px-6 h-screen justify-between py-[1.5rem] fixed lg:flex lg:flex-col' +
-          (!isShown ? ' invisible' : ' ')
-        }
+        className={`bg-[#222327] w-72 px-6 h-screen justify-between py-[1.5rem] fixed lg:flex lg:flex-col ${
+          styles.navTransition
+        } ${isShown ? styles.navVisible : styles.navHidden}`}
       >
         <div className='flex flex-col'>
           <div className='flex flex-col text-left'>
