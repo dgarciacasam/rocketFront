@@ -31,7 +31,7 @@ export const SecondarySidenav = () => {
                         className={`${styles.SecondarySideNavList} ${styles.treeChildren}`}
                       >
                         <button
-                          className={`text-left py-1 px-2 rounded mb-2 border border-white hover:bg-[#111215] font-semibold`}
+                          className={`text-left py-1 px-2 rounded mb-2 border border-white hover:bg-[#111215] font-semibold transition`}
                           key={project.id}
                           onClick={() => {
                             console.log('algo')
