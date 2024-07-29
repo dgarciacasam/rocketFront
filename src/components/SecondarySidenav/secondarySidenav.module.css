@@ -1,0 +1,38 @@
+.active {
+  border-bottom: 1px solid white;
+  margin-bottom: -1px;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+ul.tree {
+  position: relative;
+  padding: 0;
+  list-style: none;
+}
+
+ul.tree ul {
+  margin-left: 20px; /* Espaciado de los hijos */
+  padding-left: 20px; /* Espaciado de los hijos */
+  border-left: 1px solid #ccc; /* Línea vertical desde el padre */
+}
+
+ul.tree li {
+  position: relative;
+  padding: 10px 5px 0 5px;
+}
+
+.treeChildren::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -20px;
+  border-bottom: 1px solid #ccc;
+  width: 1.5em;
+  height: 1.75em;
+}
+
+ul.tree li:last-child::before {
+  border-left: none; /* Elimina la línea vertical para el último hijo */
+}
