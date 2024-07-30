@@ -18,3 +18,20 @@ export interface Task {
   description: string
   finishDate: Date
 }
+
+export interface TopContentProps {
+  username: string
+  imageUrl: string
+}
+
+export interface ContentProps {
+  projects: Project[]
+  setProjects: (newProjects: Project[]) => void
+  selectedProjectId: number
+}
+
+export interface SecondarySidenavProps {
+  projects: Project[]
+  selectedProjectId: number
+  setSelectedProject: (selectedProjectId: number) => void
+}

@@ -1,8 +1,11 @@
 import styles from './secondarySidenav.module.css'
 import { useState } from 'react'
-import { projects } from '../../common/data'
-import { Project } from '../../common/types'
-export const SecondarySidenav = () => {
+import { Project, SecondarySidenavProps } from '../../common/types'
+export const SecondarySidenav = ({
+  projects,
+  selectedProjectId,
+  setSelectedProject,
+}: SecondarySidenavProps) => {
   const [isShown, setIsShown] = useState<boolean>(true)
 
   return (
@@ -29,10 +32,14 @@ export const SecondarySidenav = () => {
                         className={`${styles.SecondarySideNavList} ${styles.treeChildren}`}
                       >
                         <button
-                          className={`text-left py-1 px-2 rounded mb-2 border border-white hover:bg-[#111215] font-semibold transition`}
+                          className={`text-left py-1 px-2 rounded mb-2 border border-white hover:bg-[#111215] font-semibold transition ${
+                            selectedProjectId === project.id
+                              ? 'bg-white text-black hover:bg-white pointer-events-none'
+                              : 'bg-transparent'
+                          }`}
                           key={project.id}
                           onClick={() => {
-                            console.log('algo')
+                            setSelectedProject(project.id)
                           }}
                         >
                           {project.title}
