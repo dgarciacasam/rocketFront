@@ -2,7 +2,7 @@ import { TopContentProps } from '../../common/types'
 import { today, meses } from '../../common/utils'
 export const TopContent = ({ username, imageUrl }: TopContentProps) => {
   return (
-    <section className='flex justify-between '>
+    <section className='flex justify-between py-2 '>
       <div className='flex items-center w-[70%] lg:w-auto'>
         <h2 className='text-xl font-semibold'>
           Bienvenido de nuevo, {username} ✌️
