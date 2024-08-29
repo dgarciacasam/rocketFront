@@ -1,13 +1,13 @@
 import styles from './secondarySidenav.module.css'
-import { useState } from 'react'
 import { Project, SecondarySidenavProps } from '../../common/types'
+
 export const SecondarySidenav = ({
   projects,
   selectedProjectId,
   setSelectedProject,
+  isShown,
+  setIsShown,
 }: SecondarySidenavProps) => {
-  const [isShown, setIsShown] = useState<boolean>(true)
-
   return (
     <section
       className={`fixed flex items-center justify-center h-screen z-40 ${
@@ -55,7 +55,7 @@ export const SecondarySidenav = ({
       </nav>
       <button
         onClick={() => {
-          setIsShown(!isShown)
+          setIsShown()
         }}
         className={
           'button flex items-center justify-center w-auto min-w-12 h-12 px-2 hover:rounded-none hover:bg-transparent ' +
