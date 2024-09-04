@@ -59,7 +59,7 @@ export const SecondarySidenav = ({
         }}
         className={
           'button flex items-center justify-center w-auto min-w-12 h-12 px-2 hover:rounded-none hover:bg-transparent ' +
-          (!isShown ? 'ml-6 lg:ml-48' : ' ml-80 ')
+          (!isShown ? 'ml-6 lg:ml-52 ' : ' ml-80 ' + styles.arrowTransition)
         }
       >
         <svg
