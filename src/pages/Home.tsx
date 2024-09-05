@@ -13,7 +13,7 @@ export const Home = () => {
   const [isShown, setIsShown] = useState<boolean>(true)
 
   return (
-    <main>
+    <main className='bg-[#2a2b2f] h-screen'>
       <Sidenav />
       <SecondarySidenav
         projects={projects}
