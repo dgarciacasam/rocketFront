@@ -3,5 +3,6 @@
   margin-bottom: -1px;
   display: flex;
   align-items: center;
+  justify-items: center;
   pointer-events: none;
 }

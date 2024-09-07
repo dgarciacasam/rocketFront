@@ -1,38 +1,14 @@
-import { Project, ProjectMenuProps, views } from '../../common/types'
+import { ProjectMenuProps, views } from '../../common/types'
+import { createNewBlankProject } from '../../common/utils'
 import styles from './ProjectMenu.module.css'
-
-const blankProject: Project = {
-  id: 5,
-  title: 'Nuevo proyecto',
-  description: 'Esta es una nueva descripción',
-  tasks: [
-    {
-      id: 1,
-      title: 'Tarea 1',
-      description: '',
-      finishDate: new Date(),
-    },
-    {
-      id: 1,
-      title: 'Tarea 1',
-      description: '',
-      finishDate: new Date(),
-    },
-    {
-      id: 1,
-      title: 'Tarea 1',
-      description: '',
-      finishDate: new Date(),
-    },
-  ],
-}
 
 export const ProjectMenu = ({
   projectView,
   setProjectView,
   projects,
-  setProjects,
   selectedProject,
+  onAddNewProject,
+  onDeleteProject,
 }: ProjectMenuProps) => {
   return (
     <section className='flex flex-col lg:flex-row justify-between border-b-2 border-solid border-[rgba(255,255,255,0.1)] mb-6'>
@@ -65,7 +41,7 @@ export const ProjectMenu = ({
         </button>
 
         <button
-          className={`button ml-1  hover:rounded ${
+          className={`button  ml-1  hover:rounded ${
             projectView === 'table' ? styles.active : 'flex items-center ml-1 '
           }`}
           onClick={() => {
@@ -98,9 +74,9 @@ export const ProjectMenu = ({
 
       <div className='flex lg:flex-grow lg:basis-0 lg:justify-end mt-2 lg:mt-0'>
         <button
-          className='flex items-center button hover:rounded text-sm lg:text-base'
+          className={`flex items-center button hover:rounded text-sm lg:text-base`}
           onClick={() => {
-            setProjects([...projects, blankProject])
+            onAddNewProject(createNewBlankProject())
           }}
         >
           <svg
@@ -123,12 +99,14 @@ export const ProjectMenu = ({
           </svg>
           Añadir proyecto
         </button>
-        {projects[0]?.id === 0 ? (
+        {selectedProject?.id === 0 ? (
           <></>
         ) : (
           <button
-            className='flex items-center button hover:rounded text-sm lg:text-base'
-            onClick={() => {}}
+            className={`flex items-center button hover:rounded text-sm lg:text-base`}
+            onClick={() => {
+              onDeleteProject(selectedProject?.id)
+            }}
           >
             <svg
               width='20'

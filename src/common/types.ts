@@ -16,7 +16,9 @@ export interface Task {
   id: number
   title: string
   description: string
+  column: number
   finishDate: Date
+  columnIndex: number
 }
 
 export interface TopContentProps {
@@ -45,9 +47,38 @@ export interface ProjectMenuProps {
   projects: Project[]
   setProjects: (newProjects: Project[]) => void
   selectedProject: Project | undefined
+  onAddNewProject: (newProject: Project) => void
+  onDeleteProject: (id: number | undefined) => void
 }
 
 export enum views {
   board = 'board',
   table = 'table',
+}
+
+export interface BoardViewProps {
+  selectedProject: Project
+  onUpdateTasks: (newProject: Project) => void
+}
+
+export interface TableViewProps extends BoardViewProps {}
+
+export interface TaskProps {
+  task: Task
+  handleDeleteTask: (taskId: number) => void
+}
+
+export interface ColumnProps {
+  tasks: Task[]
+  column: number
+  title: string
+  handleCreateTask: (newTask: Task) => void
+  handleDeleteTask: (taskId: number) => void
+  changeTaskPosition: (grabbedTask: Task, overTask: Task) => void
+}
+
+export interface ProjectContentProps {
+  selectedProject: Project
+  projectView: views
+  onUpdateTasks: (newProject: Project) => void
 }
