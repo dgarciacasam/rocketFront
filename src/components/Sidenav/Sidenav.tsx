@@ -26,7 +26,7 @@ export const Sidenav = () => {
         </div>
         <div className='flex w-full pl-4 lg:pl-0 lg:flex-col lg:h-full justify-between items-center lg:mb-8'>
           <div className='flex lg:flex-col'>
-            <SidenavButton link='/'>
+            <SidenavButton link='/' isDisabled={false}>
               <svg
                 className='icon icon-tabler icon-tabler-home'
                 width='34'
@@ -44,7 +44,7 @@ export const Sidenav = () => {
                 <path d='M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6' />
               </svg>
             </SidenavButton>
-            <SidenavButton link='user'>
+            <SidenavButton link='user' isDisabled={true}>
               <svg
                 className='icon icon-tabler icon-tabler-user'
                 width='34'
@@ -68,7 +68,7 @@ export const Sidenav = () => {
             }}
             className='lg:mt-[1.5rem]
           w-12 h-12 flex justify-center items-center
-          rounded-full hover:bg-[rgba(255,255,255,0.1)] cursor-pointer pr-2'
+          rounded-full hover:bg-[rgba(255,255,255,0.1)] cursor-pointer pr-2 pointer-events-none'
           >
             <svg
               className='icon icon-tabler icon-tabler-logout-2'
