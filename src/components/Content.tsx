@@ -14,6 +14,7 @@ export const Content = ({
   projects,
   setProjects,
   selectedProjectId,
+  setSelectedProjectId,
   isShown,
 }: ContentProps) => {
   const selectedProject =
@@ -33,8 +34,12 @@ export const Content = ({
       <TopContent username={username} imageUrl={imageUrl} />
       <section className=' flex flex-col pt-4 pb-20 md:pb-0'>
         <ProjectMenu
-          projects={projects}
-          setProjects={setProjects}
+          onUpdateProjectTitle={(updatedProject: Project) => {
+            const updatedProjects = projects.map((project: Project) =>
+              project.id === updatedProject.id ? updatedProject : project
+            )
+            setProjects(updatedProjects)
+          }}
           selectedProject={selectedProject}
           projectView={projectView}
           setProjectView={setProjectView}
@@ -42,9 +47,11 @@ export const Content = ({
             setProjects([...projects, newProject])
           }}
           onDeleteProject={(id: number | undefined) => {
-            setProjects(
-              projects.filter((project: Project) => project.id !== id)
+            const updatedProjects = projects.filter(
+              (project: Project) => project.id !== id
             )
+            setProjects(updatedProjects)
+            setSelectedProjectId(updatedProjects[0].id)
           }}
         />
 
@@ -52,7 +59,6 @@ export const Content = ({
           selectedProject={selectedProject}
           projectView={projectView}
           onUpdateTasks={(newProject: Project) => {
-            console.log(newProject)
             const updatedProjects = projects.map((project: Project) =>
               project.id === newProject.id ? newProject : project
             )

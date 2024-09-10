@@ -7,7 +7,7 @@ import { Home } from './pages/Home'
 
 function App() {
   const [isLoading, setIsLoading] = useState(false)
-  const [isLogged, setIsLogged] = useState(false)
+  const [isLogged, setIsLogged] = useState(true)
 
   const fakeLoading = () => {
     setIsLoading(true)

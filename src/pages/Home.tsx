@@ -28,6 +28,7 @@ export const Home = () => {
         projects={projects}
         setProjects={setProjects}
         selectedProjectId={selectedProject}
+        setSelectedProjectId={setSelectedProject}
         isShown={isShown}
       />
     </main>

@@ -5,7 +5,7 @@ import styles from './ProjectMenu.module.css'
 export const ProjectMenu = ({
   projectView,
   setProjectView,
-  projects,
+  onUpdateProjectTitle,
   selectedProject,
   onAddNewProject,
   onDeleteProject,
@@ -68,8 +68,22 @@ export const ProjectMenu = ({
           Vista de tabla
         </button>
       </div>
-      <div className='flex items-center pb-1'>
-        <p className='text-2xl'>{selectedProject?.title}</p>
+      <div className='flex items-center pb-1  relative'>
+        <input
+          type='text'
+          className='text-2xl text-center bg-transparent focus:border-none focus:outline-none'
+          value={selectedProject.title}
+          placeholder='Título del proyecto'
+          onChange={(e) => {
+            if (e.target.value !== '' && e.target.value.length <= 20) {
+              const updatedProject = {
+                ...selectedProject,
+                title: e.target.value,
+              }
+              onUpdateProjectTitle(updatedProject)
+            }
+          }}
+        />
       </div>
 
       <div className='flex lg:flex-grow lg:basis-0 lg:justify-end mt-2 lg:mt-0'>

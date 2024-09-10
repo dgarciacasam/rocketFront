@@ -30,6 +30,7 @@ export interface ContentProps {
   projects: Project[]
   setProjects: (newProjects: Project[]) => void
   selectedProjectId: number
+  setSelectedProjectId: (selectedProjectId: number) => void
   isShown: boolean
 }
 
@@ -44,9 +45,8 @@ export interface SecondarySidenavProps {
 export interface ProjectMenuProps {
   projectView: views
   setProjectView: (view: views) => void
-  projects: Project[]
-  setProjects: (newProjects: Project[]) => void
-  selectedProject: Project | undefined
+  onUpdateProjectTitle: (updatedProject: Project) => void
+  selectedProject: Project
   onAddNewProject: (newProject: Project) => void
   onDeleteProject: (id: number | undefined) => void
 }
