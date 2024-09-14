@@ -1,17 +1,4 @@
-import {
-  DndContext,
-  DragEndEvent,
-  DragStartEvent,
-  PointerSensor,
-  closestCenter,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core'
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { ColumnProps } from '../../common/types'
 import { Task } from './Task'
 import { Task as TaskType } from '../../common/types'
@@ -23,36 +10,11 @@ export const BoardColumn = ({
   column,
   handleCreateTask,
   handleDeleteTask,
-  changeTaskPosition,
 }: ColumnProps) => {
   const counter = tasks.length
-  const sensor = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 50,
-      },
-    })
-  )
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
-    if (!over) return
-
-    const activeId = active.id
-    const overId = over.id
-
-    if (activeId === overId) return
-
-    const activeTask = tasks.find((task) => task.id === activeId)
-    const overTask = tasks.find((task) => task.id === overId)
-
-    if (!activeTask) return
-    if (!overTask) return
-    return changeTaskPosition(activeTask, overTask)
-  }
 
   return (
-    <div className='bg-[#24262c] rounded-xl p-4 h-fit'>
+    <div className='bg-[#24262c] rounded-xl p-4 h-fit '>
       <div className='flex justify-between mb-2'>
         <div className='flex'>
           <span>({counter})</span>
@@ -85,21 +47,22 @@ export const BoardColumn = ({
         </button>
       </div>
       <div>
-        <DndContext
-          sensors={sensor}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
-            {tasks.map((task: TaskType) => (
+        <SortableContext items={tasks} strategy={verticalListSortingStrategy}>
+          {tasks.length === 0 ? (
+            // Esta es el área de drop visible cuando no hay tareas en la columna
+            <div className='min-h-44 flex justify-center items-center text-gray-500 bg-white rounded-lg'>
+              Arrastra una tarea aquí
+            </div>
+          ) : (
+            tasks.map((task: TaskType) => (
               <Task
                 key={task.id}
                 task={task}
                 handleDeleteTask={handleDeleteTask}
               />
-            ))}
-          </SortableContext>
-        </DndContext>
+            ))
+          )}
+        </SortableContext>
       </div>
     </div>
   )

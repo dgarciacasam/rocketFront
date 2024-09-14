@@ -35,18 +35,18 @@ export const defaultProjects: Project[] = [
       },
       {
         id: 7,
-        title: 'Tarea 4',
+        title: 'Tarea 7',
         description:
-          'Esta es la descripción de la tarea 3 en la que realizaremos cosas de la tarea 3',
+          'Esta es la descripción de la tarea 7 en la que realizaremos cosas de la tarea 7',
         finishDate: new Date(),
         column: 2,
         columnIndex: 2,
       },
       {
         id: 8,
-        title: 'Tarea 5',
+        title: 'Tarea 8',
         description:
-          'Esta es la descripción de la tarea 3 en la que realizaremos cosas de la tarea 3',
+          'Esta es la descripción de la tarea 8 en la que realizaremos cosas de la tarea 8',
         finishDate: new Date(),
         column: 2,
         columnIndex: 1,
@@ -68,16 +68,16 @@ export const defaultProjects: Project[] = [
       },
       {
         id: 5,
-        title: 'Tarea 1',
-        description: '',
+        title: 'Tarea 2',
+        description: 'Descripción tarea 2',
         finishDate: new Date(),
         column: 0,
         columnIndex: 1,
       },
       {
         id: 6,
-        title: 'Tarea 1',
-        description: '',
+        title: 'Tarea 3',
+        description: 'Descripción tarea 3 ',
         finishDate: new Date(),
         column: 0,
         columnIndex: 2,

@@ -1,3 +1,12 @@
+import {
+  DndContext,
+  DragEndEvent,
+  DragOverEvent,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
 import { BoardViewProps, Project, Task } from '../../common/types'
 import { getTaskByColumn } from '../../common/utils'
 import { BoardColumn } from './BoardColumn'
@@ -7,7 +16,6 @@ export const BoardView = ({
   onUpdateTasks,
 }: BoardViewProps) => {
   const [notStarted, started, done] = getTaskByColumn(selectedProject)
-
   const handleCreateTask = (newTask: Task) => {
     const updatedProject: Project = {
       ...selectedProject,
@@ -26,55 +34,135 @@ export const BoardView = ({
     onUpdateTasks(updatedProject)
   }
 
-  const handleChangeTaskPosition = (activeTask: Task, overTask: Task) => {
-    // Crea una copia del array de tasks actualizando las posiciones de activeTask y overTask
-    const updatedTasks = selectedProject.tasks.map((task) => {
-      // Intercambia el columnIndex de activeTask con overTask
-      if (task.id === activeTask.id) {
-        return { ...task, columnIndex: overTask.columnIndex }
-      }
-      if (task.id === overTask.id) {
-        return { ...task, columnIndex: activeTask.columnIndex }
+  const sensor = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 50,
+      },
+    })
+  )
+
+  const reorderTasks = (
+    activeId: number,
+    overColumnIndex: number,
+    overColumn: number,
+    activeColumn: number
+  ) => {
+    console.log('reordenadas tareas')
+    // Crear una copia profunda del objeto para no mutar selectedProject
+    const tasks = [...selectedProject.tasks]
+
+    // Buscamos la tarea que tiene el id proporcionado (activeId)
+    const taskToMove = tasks.find((task) => task.id === activeId)
+
+    if (!taskToMove) {
+      return selectedProject // Si no encuentra la tarea, retorna el proyecto sin cambios
+    }
+
+    // Actualizamos la columna y el índice de la tarea a mover
+    taskToMove.column = overColumn
+
+    // Filtramos solo las tareas de la columna de destino (overColumn)
+    const overColumnTasks = tasks
+      .filter((task) => task.column === overColumn && task.id !== activeId)
+      .sort((a, b) => a.columnIndex - b.columnIndex)
+
+    // Insertamos la tarea movida en la nueva posición dentro de su columna
+    overColumnTasks.splice(overColumnIndex, 0, taskToMove)
+
+    // Actualizamos el columnIndex de todas las tareas en la columna de destino reorganizada
+    overColumnTasks.forEach((task, index) => {
+      task.columnIndex = index
+    })
+
+    // Si la columna de origen es diferente a la columna de destino
+    // actualizamos los índices de las tareas en la columna de origen
+    if (activeColumn !== overColumn) {
+      const activeColumnTasks = tasks
+        .filter((task) => task.column === activeColumn)
+        .sort((a, b) => a.columnIndex - b.columnIndex)
+
+      // Actualizamos el columnIndex de todas las tareas en la columna de origen
+      activeColumnTasks.forEach((task, index) => {
+        task.columnIndex = index
+      })
+    }
+
+    // Actualizamos el array de tareas con los cambios
+    const updatedTasks = tasks.map((task) => {
+      if (task.column === overColumn) {
+        return overColumnTasks.find((t) => t.id === task.id)!
       }
       return task
     })
 
-    // Crea un nuevo objeto proyecto con las tasks actualizadas
-    const updatedProject: Project = {
+    // Devolver el nuevo objeto con las tareas actualizadas
+    return {
       ...selectedProject,
       tasks: updatedTasks,
     }
+  }
 
-    // Actualiza el proyecto con las tasks modificadas
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    const activeTask: Task | undefined = selectedProject.tasks.find(
+      (task: Task) => task.id === active.id
+    )
+
+    const overTask: Task | undefined = selectedProject.tasks.find(
+      (task: Task) => task.id === over?.id
+    )
+
+    if (
+      !activeTask ||
+      !overTask ||
+      activeTask.column !== overTask.column ||
+      activeTask.columnIndex === overTask.columnIndex
+    )
+      return
+
+    const updatedProject = reorderTasks(
+      activeTask.id,
+      overTask.columnIndex,
+      overTask.column,
+      activeTask.column
+    )
+
     onUpdateTasks(updatedProject)
   }
 
+  const handleDragOver = (event: DragOverEvent) => {}
+
   return (
-    <div className='grid grid-cols-3 gap-4 h-fit'>
-      <BoardColumn
-        tasks={notStarted}
-        title='Sin empezar'
-        column={0}
-        handleCreateTask={handleCreateTask}
-        handleDeleteTask={handleDeleteTask}
-        changeTaskPosition={handleChangeTaskPosition}
-      />
-      <BoardColumn
-        tasks={started}
-        title='Pendiente'
-        column={1}
-        handleCreateTask={handleCreateTask}
-        handleDeleteTask={handleDeleteTask}
-        changeTaskPosition={handleChangeTaskPosition}
-      />
-      <BoardColumn
-        tasks={done}
-        title='Finalizado'
-        column={2}
-        handleCreateTask={handleCreateTask}
-        handleDeleteTask={handleDeleteTask}
-        changeTaskPosition={handleChangeTaskPosition}
-      />
+    <div className='grid grid-cols-3 gap-4 '>
+      <DndContext
+        sensors={sensor}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
+      >
+        <BoardColumn
+          tasks={notStarted}
+          title='Sin empezar'
+          column={0}
+          handleCreateTask={handleCreateTask}
+          handleDeleteTask={handleDeleteTask}
+        />
+        <BoardColumn
+          tasks={started}
+          title='Pendiente'
+          column={1}
+          handleCreateTask={handleCreateTask}
+          handleDeleteTask={handleDeleteTask}
+        />
+        <BoardColumn
+          tasks={done}
+          title='Finalizado'
+          column={2}
+          handleCreateTask={handleCreateTask}
+          handleDeleteTask={handleDeleteTask}
+        />
+      </DndContext>
     </div>
   )
 }

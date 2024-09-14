@@ -75,7 +75,6 @@ export interface ColumnProps {
   title: string
   handleCreateTask: (newTask: Task) => void
   handleDeleteTask: (taskId: number) => void
-  changeTaskPosition: (grabbedTask: Task, overTask: Task) => void
 }
 
 export interface ProjectContentProps {
