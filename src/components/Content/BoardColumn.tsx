@@ -3,6 +3,7 @@ import { ColumnProps } from '../../common/types'
 import { Task } from './Task'
 import { Task as TaskType } from '../../common/types'
 import { createNewBlankTask } from '../../common/utils'
+import { useDroppable } from '@dnd-kit/core'
 
 export const BoardColumn = ({
   tasks,
@@ -12,6 +13,16 @@ export const BoardColumn = ({
   handleDeleteTask,
 }: ColumnProps) => {
   const counter = tasks.length
+  const isDropZoneDisabled = tasks.length === 0 ? false : true
+  //const [activeTask, setActiveTask] = useState()
+
+  const { setNodeRef } = useDroppable({
+    id: column,
+    data: {
+      isColumn: true,
+    },
+    disabled: isDropZoneDisabled,
+  })
 
   return (
     <div className='bg-[#24262c] rounded-xl p-4 h-fit '>

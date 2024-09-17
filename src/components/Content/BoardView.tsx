@@ -2,21 +2,27 @@ import {
   DndContext,
   DragEndEvent,
   DragOverEvent,
+  DragOverlay,
   PointerSensor,
   closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
-import { BoardViewProps, Project, Task } from '../../common/types'
+import { BoardViewProps, Project, Task as TaskType } from '../../common/types'
 import { getTaskByColumn } from '../../common/utils'
 import { BoardColumn } from './BoardColumn'
+import { createPortal } from 'react-dom'
+import { Task } from './Task'
+import { useState } from 'react'
 
 export const BoardView = ({
   selectedProject,
   onUpdateTasks,
 }: BoardViewProps) => {
   const [notStarted, started, done] = getTaskByColumn(selectedProject)
-  const handleCreateTask = (newTask: Task) => {
+  const [activeTask, setActiveTask] = useState<TaskType | null>()
+
+  const handleCreateTask = (newTask: TaskType) => {
     const updatedProject: Project = {
       ...selectedProject,
       tasks: [...selectedProject.tasks, newTask],
@@ -28,7 +34,7 @@ export const BoardView = ({
     const updatedProject: Project = {
       ...selectedProject,
       tasks: [
-        ...selectedProject.tasks.filter((task: Task) => task.id !== taskId),
+        ...selectedProject.tasks.filter((task: TaskType) => task.id !== taskId),
       ],
     }
     onUpdateTasks(updatedProject)
@@ -105,12 +111,13 @@ export const BoardView = ({
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
-    const activeTask: Task | undefined = selectedProject.tasks.find(
-      (task: Task) => task.id === active.id
+
+    setActiveTask(
+      selectedProject.tasks.find((task: TaskType) => task.id === active.id)
     )
 
-    const overTask: Task | undefined = selectedProject.tasks.find(
-      (task: Task) => task.id === over?.id
+    const overTask: TaskType | undefined = selectedProject.tasks.find(
+      (task: TaskType) => task.id === over?.id
     )
 
     if (
@@ -162,6 +169,18 @@ export const BoardView = ({
           handleCreateTask={handleCreateTask}
           handleDeleteTask={handleDeleteTask}
         />
+
+        {createPortal(
+          <DragOverlay>
+            {activeTask && (
+              <Task
+                task={activeTask}
+                handleDeleteTask={handleDeleteTask}
+              ></Task>
+            )}
+          </DragOverlay>,
+          document.body
+        )}
       </DndContext>
     </div>
   )

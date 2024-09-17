@@ -3,18 +3,33 @@ import { TaskProps } from '../../common/types'
 import { CSS } from '@dnd-kit/utilities'
 
 export const Task = ({ task, handleDeleteTask }: TaskProps) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: task.id })
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: task.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   }
 
+  if (isDragging) {
+    return (
+      <article
+        className='bg-[#292b3136] p-4 mb-3 rounded-xl mx-2  h-48 border  '
+        ref={setNodeRef}
+        style={style}
+      ></article>
+    )
+  }
   return (
     <article
       style={style}
-      className='bg-[#292b31] p-4 mb-3 rounded-xl mx-2 cursor-grab'
+      className='bg-[#292b31] p-4 mb-3 rounded-xl mx-2 h-48 cursor-grab'
       ref={setNodeRef}
       {...attributes}
       {...listeners}
